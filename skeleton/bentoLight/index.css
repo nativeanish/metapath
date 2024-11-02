@@ -1,0 +1,71 @@
+:root {
+  --color-main: #88aaee;
+  --color-main-accent: #4d80e6;
+  --color-overlay: rgba(0, 0, 0, 0.8);
+  --color-bg: #dfe5f2;
+  --color-text: #000;
+  --color-border: #000;
+  --border-radius-base: 5px;
+  --box-shadow-light: 4px -4px 0px 0px #000;
+  --translate-box-shadow-x: 4px;
+  --translate-box-shadow-y: -4px;
+  --translate-reverse-box-shadow-x: -4px;
+  --translate-reverse-box-shadow-y: 4px;
+  --font-weight-base: 400;
+  --font-weight-heading: 600;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.mainBody {
+  min-height: 100dvh;
+  min-width: 100dvw;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-weight: var(--font-weight-base);
+}
+
+.mainBody {
+  --sb-track-color: #ffffff;
+  --sb-thumb-color: #000000;
+}
+
+.mainBody::-webkit-scrollbar {
+  width: 16px;
+}
+
+.mainBody::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+}
+
+.mainBody::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .mainBody {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
+
+/* Additional utility classes */
+.border-base {
+  border-radius: var(--border-radius-base);
+}
+
+.shadow-light {
+  box-shadow: var(--box-shadow-light);
+}
+
+.font-heading {
+  font-weight: var(--font-weight-heading);
+}
+
+/* Media query for max-width: 450px */
+@media (max-width: 450px) {
+  /* Add any specific styles for screens smaller than 450px */
+}
