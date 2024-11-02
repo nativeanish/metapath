@@ -9,5 +9,26 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  safelist: [
+    {
+      pattern: /^(bg|text)-(\[#(?:[0-9a-fA-F]{3}){1,2}\]|[a-z]+(-[a-z\d]+)*)/,
+      variants: ["hover", "focus", "active", "border"],
+    },
+  ],
+  plugins: [
+    ({ addBase, theme }) => {
+      addBase({
+        ":root": Object.fromEntries(
+          Object.entries(theme("colors")).flatMap(([colorName, colorValue]) =>
+            typeof colorValue === "object"
+              ? Object.entries(colorValue).map(([shade, value]) => [
+                  `--color-${colorName}-${shade}`,
+                  value,
+                ])
+              : [[`--color-${colorName}`, colorValue]]
+          )
+        ),
+      });
+    },
+  ],
 };

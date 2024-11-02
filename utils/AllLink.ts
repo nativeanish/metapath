@@ -140,12 +140,12 @@ const AllLink = [
   {
     name: "Apple Music",
     icon: SiApplemusic,
-    className: "bg-[#FA243C] text-black border-2 border-black",
+    className: "bg-white text-black border-2 border-black",
   },
   {
     name: "Apple Podcasts",
     icon: SiApplepodcasts,
-    className: "bg-[#9933CC] text-black border-2 border-black",
+    className: "bg-white text-black border-2 border-black",
   },
   {
     name: "Apple Pay",

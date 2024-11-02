@@ -22,7 +22,7 @@ function getIconSvg(icon: string): string {
   }
 }
 
-export default async function BentoLight(
+export default async function generateBL(
   props: SocialLinkProps
 ): Promise<string> {
   const socialLinks =

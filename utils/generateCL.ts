@@ -28,7 +28,7 @@ const getClassName = (name: string) => {
   }
   return "";
 };
-export default function generateHTML(props: SocialLinkProps): string {
+export default function generateCL(props: SocialLinkProps): string {
   const generateClassicButton = (
     icon: string,
     text: string,

@@ -13,6 +13,7 @@ interface SocialLinkProps {
     uuid: string;
   }>;
 }
+
 export default function WindowLight(props: SocialLinkProps) {
   return (
     <div className="mainM flex items-center justify-center h-screen text-black bg-[#dfe5f2]">
@@ -24,19 +25,14 @@ export default function WindowLight(props: SocialLinkProps) {
             </span>
           </h1>
         </header>
-        <main className="relative flex h-[800px] max-h-[100dvh] flex-col rounded-br-base rounded-tr-base bg-bg font-semibold portrait:h-[100dvh] portrait:max-h-[100dvh] portrait:rounded-none">
-          <div className="main h-full max-h-full overflow-y-auto portrait:max-h-full">
-            <div className="border-b-border dark:border-b-darkBorder bg-[#a388ee] h-[50px]  rounded-tr-base border-b-4 border-black text-xl w600:text-lg w400:h-10 w400:text-base portrait:rounded-none">
-              <div className="flex h-full items-center justify-center uppercase ">
+        <main className="bg-[#e3dff2] relative flex h-[800px] max-h-[100dvh] flex-col rounded-br-base rounded-tr-base font-semibold portrait:h-[100dvh] portrait:max-h-[100dvh] portrait:rounded-none">
+          <div className="main h-full max-h-full overflow-y-auto portrait:max-h-full bg-[#e3dff2]">
+            <div className="border-b-border bg-[#a388ee] h-[50px] rounded-tr-base border-b-4 border-black text-xl w600:text-lg w400:h-10 w400:text-base portrait:rounded-none">
+              <div className="flex h-full items-center justify-center uppercase text-black">
                 Profile
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-10 space-y-4 md:space-y-0 p-4 md:p-10 text-lg leading-[1.7] w600:text-lg w400:text-base">
-              {/* <img
-                src="https://pbs.twimg.com/profile_images/1770559410554949632/cCYbnArw_400x400.jpg"
-                alt="profile picture"
-                className="w-1/2 h-auto rounded-full border-2 border-border md:h-28 md:w-28 xl:h-[184px] xl:w-[184px]"
-              /> */}
+            <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-10 text-black space-y-4 md:space-y-0 p-4 md:p-10 text-lg leading-[1.7] w600:text-lg w400:text-base">
               {props.image ? (
                 <img
                   src={props.image}

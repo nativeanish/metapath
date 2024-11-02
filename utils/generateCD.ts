@@ -25,7 +25,7 @@ const getClassName = (name: string) => {
   return "";
 };
 
-export default function generateHTMLDark(props: SocialLinkProps): string {
+export default function generateCD(props: SocialLinkProps): string {
   const generateClassicButton = (
     icon: string,
     text: string,

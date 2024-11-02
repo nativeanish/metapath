@@ -167,7 +167,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
   return html;
 }
 
-export default async function generate(props: SocialLinkProps) {
+export default async function generateCB(props: SocialLinkProps) {
   try {
     const htmlOutput = await generateHTML(props);
     return htmlOutput;
