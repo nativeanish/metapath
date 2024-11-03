@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { Globe, Twitter, Github } from "lucide-react";
-
+import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 interface ProfileInfo {
   name: string;
   description: string;
@@ -215,7 +215,7 @@ export default function ENSFetcher() {
                 )}
                 {profileInfo.url && (
                   <p className="flex items-center mb-2">
-                    <Globe className="mr-2" size={16} />
+                    <FaGlobe className="mr-2" size={16} />
                     <a
                       href={profileInfo.url}
                       target="_blank"
@@ -228,7 +228,7 @@ export default function ENSFetcher() {
                 )}
                 {profileInfo.twitter && (
                   <p className="flex items-center mb-2">
-                    <Twitter className="mr-2" size={16} />
+                    <FaXTwitter className="mr-2" size={16} />
                     <a
                       href={`https://twitter.com/${profileInfo.twitter}`}
                       target="_blank"
@@ -241,7 +241,7 @@ export default function ENSFetcher() {
                 )}
                 {profileInfo.github && (
                   <p className="flex items-center mb-4">
-                    <Github className="mr-2" size={16} />
+                    <FaGithub className="mr-2" size={16} />
                     <a
                       href={`https://github.com/${profileInfo.github}`}
                       target="_blank"
