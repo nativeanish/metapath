@@ -1,6 +1,5 @@
 import React from "react";
 import { IconType } from "react-icons";
-import { renderToStaticMarkup } from "react-dom/server";
 import { ImageIcon } from "./icon/imageIcon";
 
 interface SocialLinkProps {
