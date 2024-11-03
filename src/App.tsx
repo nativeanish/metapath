@@ -2,16 +2,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Theme from "./theme/page";
 import Editor from "./editor/page";
 import ENS from "./ens";
+import Home from "./home";
+import OnBoard from "./onboard";
 
 function App() {
   return (
     <Router>
-      <nav></nav>
       <Routes>
-        <Route path="/" element={<>Hello, from Path one page</>} />
-        {/* <Route path="/theme" element={<Theme />} /> */}
+        <Route path="/" element={<Home />} />
+        <Route path="/onboard" element={<OnBoard />} />
+        <Route path="/theme" element={<Theme />} />
         <Route path="/ens" element={<ENS />} />
-        {/* <Route path="/editor" element={<Editor />} /> */}
+        <Route path="/editor" element={<Editor />} />
       </Routes>
     </Router>
   );

@@ -18,6 +18,7 @@ interface SocialLinkProps {
   }>;
 }
 const getClassName = (name: string) => {
+  console.log(name);
   const link = AllLink.find((link) => link.name === name);
   if (link) {
     return link.className;

@@ -2,13 +2,29 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import useAddress from "../../store/useAddress";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../../components/NavBar";
+import useField from "../../store/useField";
+import AllLink from "../../utils/AllLink";
+import { uuidv7 } from "uuidv7";
+declare global {
+  interface Window {
+    ethereum?: {
+      isMetaMask?: boolean;
+      request: (args: { method: string; params?: Array<any> }) => Promise<any>;
+      on?: (eventName: string, callback: (...args: any[]) => void) => void;
+    };
+  }
+}
+
 interface ProfileInfo {
-  name: string;
-  description: string;
-  url: string;
-  twitter: string;
-  github: string;
-  avatar?: string; // New field for avatar URL
+  name?: string;
+  description?: string;
+  url?: string;
+  twitter?: string;
+  github?: string;
+  avatar?: string;
 }
 
 export default function ENSFetcher() {
@@ -19,11 +35,20 @@ export default function ENSFetcher() {
   const [hasMetaMask, setHasMetaMask] = useState<boolean>(false);
   const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
   const [error, setError] = useState<string>("");
-
+  const ar_address = useAddress((state) => state.address);
+  const setName = useField((state) => state.setName);
+  const setDescription = useField((state) => state.setDescription);
+  const setImage = useField((state) => state.setImage);
+  const insertLink = useField((state) => state.insertLink);
   useEffect(() => {
     setHasMetaMask(typeof window !== "undefined" && !!window.ethereum);
   }, []);
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!ar_address || !ar_address?.length) {
+      navigate("/");
+    }
+  }, [ar_address]);
   const getProvider = () => {
     if (window.ethereum) {
       return new ethers.providers.Web3Provider(window.ethereum);
@@ -112,7 +137,77 @@ export default function ENSFetcher() {
       setIsLoading(false);
     }
   };
+  async function urlToBase64(url: string) {
+    // Fetch the image data
+    const response = await fetch(url);
+    const blob = await response.blob();
 
+    // Convert the blob to base64
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+  const save = () => {
+    console.log(profileInfo);
+    if (profileInfo) {
+      if (profileInfo.name?.length && profileInfo.name) {
+        setName(profileInfo.name);
+      }
+      if (profileInfo.description?.length && profileInfo.description) {
+        setDescription(profileInfo.description);
+      }
+      if (profileInfo.avatar?.length && profileInfo.avatar) {
+        urlToBase64(profileInfo.avatar).then((result) => {
+          setImage(result as string);
+        });
+      }
+      if (profileInfo.twitter?.length && profileInfo.twitter) {
+        const link = AllLink.find((e) => e.name === "X")!;
+        const uuid = uuidv7();
+        console.log(link.className);
+        insertLink({
+          name: "Twitter",
+          url: `https://x.com/${profileInfo.twitter}`,
+          icon: link?.icon ? link.icon : FaXTwitter,
+          uuid: uuid,
+          iconName: "X",
+          className: "X",
+        });
+      }
+      if (profileInfo.github?.length && profileInfo.github) {
+        const link = AllLink.find((e) => e.name === "Github")!;
+        const uuid = uuidv7();
+
+        console.log(link.className);
+        insertLink({
+          name: "Github",
+          url: `https://github.com/${profileInfo.github}`,
+          icon: link?.icon ? link.icon : FaGithub,
+          uuid: uuid,
+          iconName: "Github",
+          className: "Github",
+        });
+        if (profileInfo.url?.length && profileInfo.url) {
+          const link = AllLink.find((e) => e.name === "Web")!;
+          const uuid = uuidv7();
+
+          console.log(link.className);
+          insertLink({
+            name: "Website",
+            url: profileInfo.url,
+            icon: link?.icon ? link.icon : FaGlobe,
+            uuid: uuid,
+            iconName: "Web",
+            className: "Web",
+          });
+        }
+      }
+    }
+    navigate("/theme");
+  };
   const handleManualLookup = (e: React.FormEvent) => {
     e.preventDefault();
     const input = (e.target as HTMLFormElement).elements.namedItem(
@@ -125,6 +220,7 @@ export default function ENSFetcher() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] flex flex-col">
+      <NavBar />
       <main className="flex-grow flex items-center justify-center p-4">
         <div className="flex flex-col items-center w-full max-w-md">
           <div className="w-full border-4 border-black bg-white p-4 sm:p-6 shadow-[8px_8px_0_0_#000000]">
@@ -247,9 +343,7 @@ export default function ENSFetcher() {
                   </p>
                 )}
                 <button
-                  onClick={() => {
-                    /* Handle continue action */
-                  }}
+                  onClick={() => save()}
                   className="w-full px-3 py-2 sm:px-4 sm:py-2 border-black rounded-md border-2 bg-[#d3f99d] hover:bg-[#50C878] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] font-bold tracking-widest text-sm sm:text-base"
                 >
                   Continue
@@ -260,9 +354,7 @@ export default function ENSFetcher() {
           {isLoading && <p className="mt-4 font-bold">Loading...</p>}
           {error && <p className="mt-4 text-red-600">{error}</p>}
           <button
-            onClick={() => {
-              /* Handle skip action */
-            }}
+            onClick={() => navigate("/theme")}
             className="mt-6 px-6 py-2 border-black rounded-md border-2 bg-white hover:bg-gray-100 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-gray-200 font-bold tracking-widest text-sm sm:text-base"
           >
             Skip

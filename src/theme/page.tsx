@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import NavBar from "../../components/NavBar";
 import useTheme, { theme } from "../../store/useTheme";
 import { useNavigate } from "react-router-dom";
+import useAddress from "../../store/useAddress";
+import NavBar from "../../components/NavBar";
 const images: Array<{ desktop: string; mobile: string; tag: theme }> = [
   {
     desktop: "classicLight.png",
@@ -42,6 +43,7 @@ const images: Array<{ desktop: string; mobile: string; tag: theme }> = [
 ];
 
 export default function Theme() {
+  const address = useAddress((state) => state.address);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const setTheme = useTheme((state) => state.setTheme);
@@ -58,6 +60,11 @@ export default function Theme() {
       router(`/editor?theme=${theme}`);
     }
   }, [theme]);
+  useEffect(() => {
+    if (!address || !address?.length) {
+      router("/");
+    }
+  }, [address]);
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
@@ -76,7 +83,7 @@ export default function Theme() {
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      <NavBar text="Select a theme" />
+      <NavBar text="Theme" />
       <div className="relative flex-grow w-full">
         <div className="absolute inset-0">
           {isMobile ? (

@@ -12,9 +12,11 @@ function ImageUploader() {
 
   // Generate avatar only on the client side
   useEffect(() => {
-    setImage(
-      `data:image/svg+xml;base64,${btoa(getRandomAvatar(25) as string)}`
-    );
+    if (!image) {
+      setImage(
+        `data:image/svg+xml;base64,${btoa(getRandomAvatar(25) as string)}`
+      );
+    }
   }, []);
 
   const regenerate = () => {
