@@ -1,8 +1,6 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
+import { FaGithub, FaGlobe } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 interface ProfileInfo {
   name: string;
@@ -53,7 +51,13 @@ export default function ENSFetcher() {
       setError("Ethereum wallet not detected");
     }
   };
-
+  const WalletFetch = () => {
+    if (address.length) {
+      fetchENSAndProfile(address)
+        .then()
+        .catch((err) => console.log(err));
+    }
+  };
   const fetchENSAndProfile = async (addressOrENS: string) => {
     setIsLoading(true);
     setError("");
@@ -92,8 +96,13 @@ export default function ENSFetcher() {
             github: github || "",
             avatar: avatar || "",
           });
+        } else {
+          // If the resolver does not exist, set the error message
+          setError("ENS information not found");
+          setProfileInfo(null);
         }
       } else {
+        setError("ENS information not found");
         setProfileInfo(null);
       }
     } catch (error) {
@@ -116,32 +125,6 @@ export default function ENSFetcher() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] flex flex-col">
-      <nav className="border border-black p-4 flex items-center justify-between bg-[#f5f5f5] text-black">
-        <div className="text-2xl font-bold mx-auto sm:mx-0">
-          <span className="bg-[#d3f99d] px-2 py-1 mr-1 border-black border-2 rounded-md shadow-[3px_3px_0_0_#000000]">
-            M
-          </span>
-          etapaths
-        </div>
-        {hasMetaMask ? (
-          <button
-            onClick={connectEthereum}
-            className="hidden sm:block px-4 py-2 border-black rounded-md border-2 bg-[#d3f99d] hover:bg-[#50C878] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] font-bold tracking-widest"
-          >
-            {isConnected ? "Connected" : "Connect"}
-          </button>
-        ) : (
-          <a
-            href="https://metamask.io/download/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:block px-4 py-2 border-black rounded-md border-2 bg-[#d3f99d] hover:bg-[#50C878] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] font-bold tracking-widest"
-          >
-            Install MetaMask
-          </a>
-        )}
-      </nav>
-
       <main className="flex-grow flex items-center justify-center p-4">
         <div className="flex flex-col items-center w-full max-w-md">
           <div className="w-full border-4 border-black bg-white p-4 sm:p-6 shadow-[8px_8px_0_0_#000000]">
@@ -153,15 +136,26 @@ export default function ENSFetcher() {
               <>
                 <div className="mb-8 p-4 border-2 border-black">
                   <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
-                    Connect Ethereum
+                    {isConnected ? "Wallet ENS Lookup" : "Connect Ethereum"}
                   </h2>
                   {hasMetaMask ? (
-                    <button
-                      onClick={connectEthereum}
-                      className="w-full px-3 py-2 sm:px-4 sm:py-2 border-black rounded-md border-2 bg-[#d3f99d] hover:bg-[#50C878] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] font-bold tracking-widest mb-4 text-sm sm:text-base"
-                    >
-                      {isConnected ? "Connected" : "Connect Wallet"}
-                    </button>
+                    <>
+                      {isConnected ? (
+                        <button
+                          onClick={WalletFetch}
+                          className="w-full px-3 py-2 sm:px-4 sm:py-2 border-black rounded-md border-2 bg-[#d3f99d] hover:bg-[#50C878] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] font-bold tracking-widest mb-4 text-sm sm:text-base"
+                        >
+                          Fetch ENS
+                        </button>
+                      ) : (
+                        <button
+                          onClick={connectEthereum}
+                          className="w-full px-3 py-2 sm:px-4 sm:py-2 border-black rounded-md border-2 bg-[#d3f99d] hover:bg-[#50C878] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] font-bold tracking-widest mb-4 text-sm sm:text-base"
+                        >
+                          Connect
+                        </button>
+                      )}
+                    </>
                   ) : (
                     <a
                       href="https://metamask.io/download/"
