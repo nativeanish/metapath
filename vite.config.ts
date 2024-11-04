@@ -3,6 +3,13 @@ import react from "@vitejs/plugin-react";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 // https://vite.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      crypto: "crypto-browserify",
+      buffer: "buffer/",
+      stream: "readable-stream",
+    },
+  },
   plugins: [
     react(),
     nodePolyfills({

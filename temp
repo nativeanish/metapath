@@ -1,0 +1,372 @@
+import React, { useState, ReactNode, useEffect } from "react";
+import { FaChevronRight, FaUpload } from "react-icons/fa";
+import useModal from "../store/useModal";
+
+interface CustomModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface Step {
+  title: string;
+  content:
+    | ReactNode
+    | ((props: {
+        isUploading: boolean;
+        handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+      }) => ReactNode);
+}
+
+// Example of a custom React component that can be used in step content
+const CustomInput: React.FC<{ label: string; type: string }> = ({
+  label,
+  type,
+}) => (
+  <div className="mb-4">
+    <label className="block text-sm font-bold mb-2" htmlFor={label}>
+      {label}
+    </label>
+    <input
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id={label}
+      type={type}
+      placeholder={label}
+    />
+  </div>
+);
+function AnimateInput({
+  label = "Username",
+  type = "text",
+  animationTexts = [],
+}: {
+  label?: string;
+  type?: string;
+  animationTexts?: string[];
+}) {
+  const [animatedText, setAnimatedText] = useState("");
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setAnimatedText((prevText) => {
+        const currentIndex = animationTexts.indexOf(prevText);
+        const nextIndex = (currentIndex + 1) % animationTexts.length;
+        return animationTexts[nextIndex];
+      });
+    }, 2000); // Change text every 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return (
+    <div className="mb-4">
+      <label
+        className="block text-sm font-bold mb-2 text-gray-700"
+        htmlFor={label}
+      >
+        {label}
+      </label>
+      <div className="flex rounded-md overflow-hidden shadow-[0_4px_10px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.15)]">
+        <input
+          className="flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none border-t border-b border-l border-gray-300 rounded-l-md"
+          id={label}
+          type={type}
+          placeholder={label}
+          aria-label={label}
+        />
+        <div
+          className="bg-gradient-to-r from-gray-100 to-gray-200 py-2 px-3 text-gray-700 leading-tight whitespace-nowrap overflow-hidden border-t border-b border-r border-gray-300 rounded-r-md"
+          aria-hidden="true"
+        >
+          <span className="inline-block min-w-[60px] text-center font-medium">
+            {animatedText}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const steps: Step[] = [
+  {
+    title: "Set ArNS record",
+    content: (
+      <div className="space-y-4">
+        <CustomInput label="Process ID" type="text" />
+        <AnimateInput
+          label="Name"
+          type="text"
+          animationTexts={[
+            ".permagate.io",
+            ".ar-io.dev ",
+            ".g8way.io",
+            ".arweave.net",
+          ]}
+        />
+        <button className="w-full bg-black text-white p-2 rounded-md font-mono text-md">
+          Register
+        </button>
+      </div>
+    ),
+  },
+  {
+    title: "",
+    content: (
+      <div className="space-y-4">
+        <div className="flex flex-col items-center">
+          <svg
+            className="animate-spin h-16 w-16 text-black"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <p className="mt-4 text-lg font-semibold">Uploading image...</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "",
+    content: (
+      <div className="space-y-4">
+        <div className="flex flex-col items-center">
+          <svg
+            className="animate-spin h-16 w-16 text-black"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <p className="mt-4 text-lg font-semibold">Uploading Content...</p>
+        </div>
+      </div>
+    ),
+  },
+
+  // {
+  //   title: "Image Uploading",
+  //   content: (
+  //     <div className="space-y-4">
+  //       <div className="flex flex-col items-center">
+  //         <svg
+  //           className="animate-spin h-16 w-16 text-black"
+  //           xmlns="http://www.w3.org/2000/svg"
+  //           fill="none"
+  //           viewBox="0 0 24 24"
+  //         >
+  //           <circle
+  //             className="opacity-25"
+  //             cx="12"
+  //             cy="12"
+  //             r="10"
+  //             stroke="currentColor"
+  //             strokeWidth="4"
+  //           ></circle>
+  //           <path
+  //             className="opacity-75"
+  //             fill="currentColor"
+  //             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+  //           ></path>
+  //         </svg>
+  //         <p className="mt-4 text-lg font-semibold">Uploading image...</p>
+  //       </div>
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: "Preferences",
+  //   content: (
+  //     <div className="space-y-4">
+  //       <label className="flex items-center space-x-2">
+  //         <input
+  //           type="checkbox"
+  //           className="form-checkbox h-5 w-5 text-black border-2 border-black rounded"
+  //         />
+  //         <span>Receive newsletter</span>
+  //       </label>
+  //       <label className="flex items-center space-x-2">
+  //         <input
+  //           type="checkbox"
+  //           className="form-checkbox h-5 w-5 text-black border-2 border-black rounded"
+  //         />
+  //         <span>Agree to terms</span>
+  //       </label>
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: "Review",
+  //   content: (
+  //     <div className="space-y-4">
+  //       <p>Please review your information:</p>
+  //       <ul className="list-disc list-inside">
+  //         <li>Name: John Doe</li>
+  //         <li>Email: john@example.com</li>
+  //         <li>Address: 123 Main St, Anytown</li>
+  //         <li>Image: Uploaded successfully</li>
+  //       </ul>
+  //     </div>
+  //   ),
+  // },
+];
+
+export default function MultiStepLoader({ isOpen, onClose }: CustomModalProps) {
+  const currentStep = useModal((state) => state.currentStep);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // const handleNext = () => {
+  //   if (currentStep < steps.length - 1) {
+  //     setIsLoading(true);
+  //     setTimeout(() => {
+  //       setCurrentStep(currentStep + 1);
+  //       setIsLoading(false);
+  //     }, 1000);
+  //   }
+  // };
+
+  // const handlePrevious = () => {
+  //   if (currentStep > 0) {
+  //     setCurrentStep(currentStep - 1);
+  //   }
+  // };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsUploading(true);
+      // Simulating file upload
+      setTimeout(() => {
+        setIsUploading(false);
+      }, 3000);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  const renderStepContent = (step: Step) => {
+    if (typeof step.content === "function") {
+      return step.content({ isUploading, handleFileChange });
+    }
+    return step.content;
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div
+        className="bg-[#d3f99d] w-full max-w-md p-6 rounded-lg shadow-lg"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex justify-between mb-6">
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              className={`flex items-center ${
+                index === steps.length - 1 ? "" : "flex-1"
+              }`}
+            >
+              <div
+                className={`w-8 h-8 rounded-full border-2 border-black flex items-center justify-center font-bold ${
+                  index <= currentStep
+                    ? "bg-black text-[#d3f99d]"
+                    : "bg-[#d3f99d] text-black"
+                }`}
+              >
+                {index + 1}
+              </div>
+              {index < steps.length - 1 && (
+                <div
+                  className={`flex-1 h-1 mx-1 ${
+                    index < currentStep ? "bg-black" : "bg-gray-300"
+                  }`}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        <h2 className="text-xl font-bold mb-4">{steps[currentStep].title}</h2>
+
+        <div className="mb-6">{renderStepContent(steps[currentStep])}</div>
+
+        {/* <div className="flex justify-between">
+          <button
+            onClick={handlePrevious}
+            disabled={currentStep === 0 || isLoading || isUploading}
+            className="px-4 py-2 border-2 border-black bg-[#d3f99d] text-black font-bold rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={
+              currentStep === steps.length - 1 ||
+              isLoading ||
+              isUploading ||
+              currentStep === 2 ||
+              currentStep === 3
+            }
+            className="px-4 py-2 border-2 border-black bg-black text-[#d3f99d] font-bold rounded disabled:opacity-50 flex items-center"
+          >
+            {isLoading ? (
+              <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+            ) : (
+              <>
+                {currentStep === steps.length - 2 ? "Finish" : "Next"}
+                <FaChevronRight className="ml-2 w-4 h-4" />
+              </>
+            )}
+          </button>
+        </div>
+        <button
+          onClick={onClose}
+          className="mt-4 px-4 py-2 border-2 border-black bg-[#d3f99d] text-black font-bold rounded"
+        >
+          Close
+        </button> */}
+      </div>
+    </div>
+  );
+}

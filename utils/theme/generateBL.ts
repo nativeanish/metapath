@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { ReactIcon } from "./icon/ReactIcon";
+import { ReactIcon } from "../icon/ReactIcon";
 interface SocialLinkProps {
   name: string;
   image: string;

@@ -1,76 +1,71 @@
 import useField from "../store/useField";
 import useTheme from "../store/useTheme";
-import generateCL from "./generateCL";
-import generateCD from "./generateCD";
-import generateCB from "./generateCB";
-import generateWL from "./generateWL";
-import generateWD from "./generateWD";
-import generateBL from "./generateBL";
-import generateBD from "./generateBD";
-export default function submit() {
+import generateCL from "./theme/generateCL";
+import generateCD from "./theme/generateCD";
+import generateCB from "./theme/generateCB";
+import generateWL from "./theme/generateWL";
+import generateWD from "./theme/generateWD";
+import generateBL from "./theme/generateBL";
+import generateBD from "./theme/generateBD";
+export default async function submit(img: string) {
   const name = useField.getState().name;
   const description = useField.getState().description;
   const social = useField.getState().social;
-  const img = useField.getState().image;
   const theme = useTheme.getState().theme;
   if (theme === "classicLight") {
-    console.log(
-      generateCL({
-        name,
-        description,
-        social,
-        image: img,
-      })
-    );
+    return await generateCL({
+      name,
+      description,
+      social,
+      image: img,
+    });
   }
   if (theme === "classicDark") {
-    console.log(
-      generateCD({
-        name,
-        description,
-        social,
-        image: img,
-      })
-    );
+    return await generateCD({
+      name,
+      description,
+      social,
+      image: img,
+    });
   }
   if (theme === "classicBrut") {
-    generateCB({
+    return await generateCB({
       name,
       description,
       social,
       image: img,
-    }).then((e) => console.log(e));
+    });
   }
   if (theme === "windowLight") {
-    generateWL({
+    return await generateWL({
       name,
       description,
       social,
       image: img,
-    }).then((e) => console.log(e));
+    });
   }
   if (theme === "windowDark") {
-    generateWD({
+    return await generateWD({
       name,
       description,
       social,
       image: img,
-    }).then((e) => console.log(e));
+    });
   }
   if (theme === "bentoLight") {
-    generateBL({
+    return await generateBL({
       name,
       description,
       social,
       image: img,
-    }).then((e) => console.log(e));
+    });
   }
   if (theme === "bentoDark") {
-    generateBD({
+    return await generateBD({
       name,
       description,
       social,
       image: img,
-    }).then((e) => console.log(e));
+    });
   }
 }

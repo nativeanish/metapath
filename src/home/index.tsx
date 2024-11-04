@@ -3,7 +3,6 @@ import useAddress from "../../store/useAddress";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-
 export default function Home() {
   const address = useAddress((state) => state.address);
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ export default function Home() {
           your online presence.
         </p>
         <a
-          href="/signup"
+          href="#"
           className="inline-flex items-center px-8 py-4 bg-black text-yellow-300 text-2xl font-bold hover:bg-yellow-300 hover:text-black border-4 border-black transition-colors"
         >
           Get Started

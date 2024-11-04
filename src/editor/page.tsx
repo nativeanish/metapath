@@ -12,6 +12,8 @@ import ClassicBrut from "../../skeleton/classicBrut/page";
 import ClassicLight from "../../skeleton/classicLight/page";
 import ClassicDark from "../../skeleton/classicDark/page";
 import { useLocation, useNavigate } from "react-router-dom";
+import MultiStepLoader from "../../components/MultiStepLoader";
+import useModal from "../../store/useModal";
 
 export default function SplitScreen() {
   const [splitPosition, setSplitPosition] = useState(75);
@@ -73,45 +75,49 @@ export default function SplitScreen() {
     window.addEventListener("resize", updateWidths);
     return () => window.removeEventListener("resize", updateWidths);
   }, [splitPosition]);
-
+  const isOpen = useModal((state) => state.isOpen);
+  const onClose = useModal((state) => state.onClose);
   return (
     <>
       <NavBar text="Editor" />
       {theme ? (
-        <div className="flex h-screen">
-          <div
-            id="left-panel"
-            className="bg-gray-100 overflow-auto"
-            style={{ width: `${splitPosition}%` }}
-          >
-            {theme === "bentoDark" ? (
-              <BentoDark {...{ name, description, image, social }} />
-            ) : theme === "bentoLight" ? (
-              <BentoLight {...{ name, description, image, social }} />
-            ) : theme === "windowLight" ? (
-              <WindowLight {...{ name, description, image, social }} />
-            ) : theme === "windowDark" ? (
-              <WindowDark {...{ name, description, image, social }} />
-            ) : theme === "classicBrut" ? (
-              <ClassicBrut {...{ name, description, image, social }} />
-            ) : theme === "classicLight" ? (
-              <ClassicLight {...{ name, description, image, social }} />
-            ) : theme === "classicDark" ? (
-              <ClassicDark {...{ name, description, image, social }} />
-            ) : null}
+        <>
+          <MultiStepLoader isOpen={isOpen} onClose={onClose} />
+          <div className="flex h-screen">
+            <div
+              id="left-panel"
+              className="bg-gray-100 overflow-auto"
+              style={{ width: `${splitPosition}%` }}
+            >
+              {theme === "bentoDark" ? (
+                <BentoDark {...{ name, description, image, social }} />
+              ) : theme === "bentoLight" ? (
+                <BentoLight {...{ name, description, image, social }} />
+              ) : theme === "windowLight" ? (
+                <WindowLight {...{ name, description, image, social }} />
+              ) : theme === "windowDark" ? (
+                <WindowDark {...{ name, description, image, social }} />
+              ) : theme === "classicBrut" ? (
+                <ClassicBrut {...{ name, description, image, social }} />
+              ) : theme === "classicLight" ? (
+                <ClassicLight {...{ name, description, image, social }} />
+              ) : theme === "classicDark" ? (
+                <ClassicDark {...{ name, description, image, social }} />
+              ) : null}
+            </div>
+            <div
+              className="w-1 bg-gray-300 cursor-col-resize"
+              onMouseDown={handleMouseDown}
+            ></div>
+            <div
+              id="right-panel"
+              className="bg-gray-200 overflow-auto"
+              style={{ width: `${100 - splitPosition}%` }}
+            >
+              <AsymmetricalBrutalistEditor />
+            </div>
           </div>
-          <div
-            className="w-1 bg-gray-300 cursor-col-resize"
-            onMouseDown={handleMouseDown}
-          ></div>
-          <div
-            id="right-panel"
-            className="bg-gray-200 overflow-auto"
-            style={{ width: `${100 - splitPosition}%` }}
-          >
-            <AsymmetricalBrutalistEditor />
-          </div>
-        </div>
+        </>
       ) : null}
     </>
   );

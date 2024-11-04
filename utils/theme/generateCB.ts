@@ -1,6 +1,6 @@
 import React from "react";
 import { IconType } from "react-icons";
-import { ImageIcon } from "./icon/imageIcon";
+import { ImageIcon } from "../icon/imageIcon";
 
 interface SocialLinkProps {
   name: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import { IconType } from "react-icons/lib";
-import AllLink from "./AllLink";
-import { ImageIcon } from "./icon/imageIcon";
+import AllLink from "../AllLink";
+import { ImageIcon } from "../icon/imageIcon";
 
 interface SocialLinkProps {
   name: string;
@@ -17,6 +17,10 @@ interface SocialLinkProps {
   }>;
 }
 
+function formatString(input: string): string {
+  return input.toLowerCase().replace(/[\s.]+/g, "-");
+}
+
 const getClassName = (name: string) => {
   const link = AllLink.find((link) => link.name === name);
   if (link) {
@@ -24,20 +28,21 @@ const getClassName = (name: string) => {
   }
   return "";
 };
-
-export default function generateCD(props: SocialLinkProps): string {
+function _generateCL(props: SocialLinkProps): string {
   const generateClassicButton = (
     icon: string,
     text: string,
     href: string,
     className: string
   ) => {
+    const formattedIcon = formatString(icon);
     const icon_adddress = ImageIcon.find((item) => item.name === icon);
 
     return `
-      <a class="${className} rounded-md flex flex-row items-center justify-center space-x-4 p-1 font-bold mb-3" target="_blank" rel="noopener noreferrer" href="${href}">
+      <a class="${className} rounded-md flex flex-row items-center justify-center space-x-4 p-1 font-bold " target="_blank" rel="noopener noreferrer" href="${href}">
         <div class="h-10 w-10 sm:h-10 sm:w-10 flex items-center justify-center">
-          <img src="https://arweave.net/${icon_adddress?.arweave[0]}" alt="${text}" class="w-full h-full">
+          <img src="https://arweave.net/${icon_adddress?.arweave[0]}"
+           alt="${text}" class="w-full h-full">
         </div>
         <p class="sm:text-md ml-2 text-md">${text}</p>
       </a>
@@ -64,18 +69,18 @@ export default function generateCD(props: SocialLinkProps): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${props.name || "Profile"} - Classic Dark Profile</title>
+    <title>${props.name || "Profile"} - Classic Light Profile</title>
     <meta name="description" content="${props.description || ""}">
     <meta property="og:title" content="${
       props.name || "Profile"
-    } - Classic Dark Profile">
+    } - Classic Light Profile">
     <meta property="og:description" content="${props.description || ""}">
     <meta property="og:image" content="${props.image || ""}">
     <meta property="og:type" content="profile">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="${
       props.name || "Profile"
-    } - Classic Dark Profile">
+    } - Classic Light Profile">
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="${props.image || ""}">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -86,7 +91,7 @@ export default function generateCD(props: SocialLinkProps): string {
       }
     </style>
 </head>
-<body class="min-h-screen bg-[#212121] text-white py-12 px-4 sm:px-6 lg:px-8">
+<body class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md mx-auto pt-3">
     <div class="text-center">
       <div class="w-32 h-32 rounded-3xl mx-auto flex items-center justify-center">
@@ -102,13 +107,13 @@ export default function generateCD(props: SocialLinkProps): string {
             : ""
         }
       </div>
-      <h1 class="mt-6 text-5xl font-extrabold text-white">${
+      <h1 class="mt-6 text-5xl font-extrabold text-gray-900">${
         props.name || ""
       }</h1>
-      <p class="mt-5 text-md text-white">${props.description || ""}</p>
+      <p class="mt-5 text-md text-gray-600">${props.description || ""}</p>
     </div>
     <div class="flex flex-col items-center justify-center">
-      <div class="mt-8 flex flex-col justify-center w-10/12 box-border font-bold">
+      <div class="mt-8 space-y-4 flex flex-col justify-center w-10/12 box-border font-bold">
         ${socialButtons}
       </div>
     </div>
@@ -118,4 +123,13 @@ export default function generateCD(props: SocialLinkProps): string {
   `;
 
   return html;
+}
+export default async function generateCL(props: SocialLinkProps) {
+  try {
+    const htmlOutput = _generateCL(props);
+    return htmlOutput;
+  } catch (error) {
+    console.error("Error generating HTML:", error);
+    return "An error occurred while generating the HTML.";
+  }
 }

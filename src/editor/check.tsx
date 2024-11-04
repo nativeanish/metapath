@@ -5,7 +5,7 @@ import ImageUploader from "../../components/ui/ImageUploader";
 import AddLinks from "../../components/ui/SearchLink";
 import SocialLink from "../../components/ui/Social";
 import useField from "../../store/useField";
-import submit from "../../utils/submit";
+import startUpload from "../../utils/upload";
 
 export default function AsymmetricalBrutalistEditor() {
   const links = useField((state) => state.social);
@@ -49,7 +49,7 @@ export default function AsymmetricalBrutalistEditor() {
             ))}
           </>
           <button
-            onClick={submit}
+            onClick={() => startUpload()}
             className="w-full p-3 bg-green-400 text-white font-bold text-center border-2 border-black hover:bg-green-800 transition-colors uppercase tracking-widest"
           >
             Submit
