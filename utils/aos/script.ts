@@ -10,7 +10,7 @@ const aos = async () => {
   const handle = useHandle.getState().subdomain;
   const setModal = useModal.getState().onClose;
   useModal.setState({ currentStep: 4 });
-  const a1 = await message({
+  await message({
     signer: createDataItemSigner(window.arweaveWallet),
     process: AOS,
     tags: [
@@ -21,12 +21,7 @@ const aos = async () => {
     ],
     data: JSON.stringify(_social),
   });
-  const a2 = await result({
-    process: AOS,
-    message: a1,
-  });
-  console.log(a2);
-  const a3 = await message({
+  await message({
     signer: createDataItemSigner(window.arweaveWallet),
     process: AOS,
     tags: [
@@ -45,11 +40,6 @@ const aos = async () => {
     ],
     data: JSON.stringify(_social.map((e) => e.uuid)),
   });
-  const a4 = await result({
-    process: AOS,
-    message: a3,
-  });
-  console.log(a4);
   setModal();
 };
 
