@@ -1,6 +1,6 @@
 import useField from "../../store/useField";
 import useHandle from "../../store/useHandle";
-import { message, createDataItemSigner, result } from "@permaweb/aoconnect";
+import { message, createDataItemSigner } from "@permaweb/aoconnect";
 import { AOS } from "../constant";
 import useModal from "../../store/useModal";
 const aos = async () => {
