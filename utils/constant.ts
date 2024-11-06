@@ -1,2 +1,2 @@
-export const AOS = "4u-DRYOc_taILBXniPYg-MrTsti_AfFxSs8oVxF-qo0";
+export const AOS = "Dsn3QWsOGDx8Qxx6f7qatgeesLye4xBmt4ssG-L90ME";
 //aos metapaths
