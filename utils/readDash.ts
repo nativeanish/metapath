@@ -32,7 +32,7 @@ export const readUser = async () => {
           },
           {
             name: "url",
-            value: e,
+            value: `https://${e}_metapaths.ar-io.dev`,
           },
         ],
         signer: createDataItemSigner(window.arweaveWallet),
