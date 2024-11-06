@@ -52,6 +52,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
       <a class="social-link bg-[#88aaee] shadow-light rounded-base border-4 border-black bg-main p-5 transition-all hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none"
          key="${key.uuid}"
          target="_blank"
+         onclick="look('${key.uuid}')"
          href="${key.url}">
         <div class="icon-container h-8 w-8 sm:h-10 sm:w-10">
           <img src="https://arweave.net/${getIconSvg(key.iconName)}" alt="${
@@ -77,6 +78,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
     ${seoTags}
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
     <link rel="stylesheet" href="${arweaveCssUrl}">
     <style>
       /* Additional styles not included in the Arweave CSS file */

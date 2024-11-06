@@ -34,6 +34,7 @@ export default async function generateBL(
            key="${key.uuid}"
            target="_blank"
            rel="noopener noreferrer"
+           onclick="look('${key.uuid}')"
            href="${key.url}">
           <div class="h-8 w-8 sm:h-10 sm:w-10">
           <img src="https://arweave.net/${getIconSvg(key.iconName)}" alt="${
@@ -69,6 +70,7 @@ export default async function generateBL(
     <meta name="twitter:image" content="${props.image || ""}">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
       <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
    <link href="https://arweave.net/jx_UMs0awkmdMyQpzrHc6Dj-f5VPKMUbUctrnsGEwQ8" rel="stylesheet"> 
 </head>
 <body class="mainBody">

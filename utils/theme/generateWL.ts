@@ -34,6 +34,7 @@ export default async function generateWL(
           key="${index}"
           href="${link.url}"
           target="_blank"
+          onclick="look('${link.uuid}')"
           rel="noopener noreferrer"
           class="flex items-center justify-center space-x-2 px-4 py-3 bg-[#a388ee] text-black font-bold text-lg border-4 border-black rounded-base shadow-[4px_4px_0_0_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all duration-200 overflow-hidden w-full sm:w-[calc(50%-8px)] md:w-[calc(50%-8px)]"
         >
@@ -70,6 +71,7 @@ export default async function generateWL(
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="${props.image || ""}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
     <link rel="stylesheet" href="https://arweave.net/XwN5wxjglTCYCQXAI8yAhfccvOM5urOind1iJMPjBDA"> 
 </head>
 <body>

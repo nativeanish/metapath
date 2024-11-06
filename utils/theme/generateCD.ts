@@ -30,12 +30,13 @@ function _generateCD(props: SocialLinkProps): string {
     icon: string,
     text: string,
     href: string,
+    uuid: string,
     className: string
   ) => {
     const icon_adddress = ImageIcon.find((item) => item.name === icon);
 
     return `
-      <a class="${className} rounded-md flex flex-row items-center justify-center space-x-4 p-1 font-bold mb-3" target="_blank" rel="noopener noreferrer" href="${href}">
+      <a onclick="look('${uuid}')" class="${className} rounded-md flex flex-row items-center justify-center space-x-4 p-1 font-bold mb-3" target="_blank" rel="noopener noreferrer" href="${href}">
         <div class="h-10 w-10 sm:h-10 sm:w-10 flex items-center justify-center">
           <img src="https://arweave.net/${icon_adddress?.arweave[0]}" alt="${text}" class="w-full h-full">
         </div>
@@ -52,6 +53,7 @@ function _generateCD(props: SocialLinkProps): string {
               item.iconName,
               item.name,
               item.url,
+              item.uuid,
               getClassName(item.className)
             )
           )
@@ -79,6 +81,7 @@ function _generateCD(props: SocialLinkProps): string {
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="${props.image || ""}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
       body {

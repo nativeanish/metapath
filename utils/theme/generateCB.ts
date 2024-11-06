@@ -20,6 +20,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
     icon: string,
     text: string,
     href: string,
+    uuid: string,
     isLast: boolean
   ) => {
     const icon_adddress = ImageIcon.find((item) => item.name === icon);
@@ -27,7 +28,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
       <button class="brutalist-button w-full px-2 py-2 text-lg font-bold transition-all duration-200 rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 focus:outline-none focus:ring-0 ${
         !isLast ? "mb-4" : ""
       }">
-        <a href="${href}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center">
+        <a href="${href}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center" onclick="look('${uuid}')">
           <span class="truncate ml-2">${
             text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
           }</span>
@@ -47,6 +48,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
               item.iconName,
               item.name,
               item.url,
+              item.uuid,
               index === props.social!.length - 1
             )
           )
@@ -74,6 +76,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="${props.image || ""}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
       body {
