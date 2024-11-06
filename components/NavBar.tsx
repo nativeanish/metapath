@@ -9,7 +9,10 @@ import {
 } from "../utils/arconnect";
 import { MdDashboard } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
+import { HiDocumentPlus } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 export default function NavBar({ text }: { text?: string }) {
+  const router = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const address = useAddress((state) => state.address);
   useEffect(() => {
@@ -66,11 +69,21 @@ export default function NavBar({ text }: { text?: string }) {
               >
                 <button
                   // onClick={() => connectAr()}
+                  onClick={() => router("/dashboard")}
                   className=" flex items-center justify-between flex-row px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left border-black border-2"
                   role="menuitem"
                 >
                   Dashboard
                   <MdDashboard className="w-6 h-6" />
+                </button>
+                <button
+                  // onClick={() => connectAr()}
+                  onClick={() => router("/theme")}
+                  className=" flex items-center justify-between flex-row px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left border-black border-2"
+                  role="menuitem"
+                >
+                  New Page
+                  <HiDocumentPlus className="w-6 h-6" />
                 </button>
                 <button
                   onClick={() => Disconnect()}
