@@ -3,6 +3,7 @@ import useHandle from "../../store/useHandle";
 import { message, createDataItemSigner } from "@permaweb/aoconnect";
 import { AOS } from "../constant";
 import useModal from "../../store/useModal";
+import { NavigateFunction } from "react-router-dom";
 const aos = async () => {
   const social = useField.getState().social;
   const _social = social.map((e) => ({ name: e.iconName, uuid: e.uuid }));
@@ -41,12 +42,14 @@ const aos = async () => {
     data: JSON.stringify(_social.map((e) => e.uuid)),
   });
   setModal();
+  window.open(`https://${handle}_metapaths.ar-io.dev`, "_blank");
 };
 
-const runAO = () => {
+const runAO = (navigate: NavigateFunction) => {
   aos()
     .then(() => {
       console.log("done");
+      navigate("/dashboard");
     })
     .catch(console.log);
 };

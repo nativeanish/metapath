@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useID from "../../store/useID";
 import useHandle from "../../store/useHandle";
 import runAO from "../../utils/aos/script";
+import { useNavigate } from "react-router-dom";
 
 function Arns() {
   const name = useHandle((state) => state.subdomain);
@@ -18,6 +19,7 @@ function Arns() {
     }
   }, [name, isValid]);
   const id = useID((state) => state.id);
+  const navigate = useNavigate();
   const show = () => {
     if (name.length) {
       fetch("https://metapaths-server.onrender.com/check", {
@@ -46,7 +48,7 @@ function Arns() {
             }).then((res) => {
               res.json().then((res) => {
                 if (res.status === 1) {
-                  runAO();
+                  runAO(navigate);
                 } else {
                   setError("Something went wrong, Please re register");
                   setLoading(false);
