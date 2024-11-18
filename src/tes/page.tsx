@@ -1,5 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -20,18 +24,28 @@ interface ProfileInfo {
   avatar?: string;
 }
 
-export default function Tes() {
+export default function Component() {
   const [isENSDialogOpen, setIsENSDialogOpen] = useState(false);
   const [ensInput, setEnsInput] = useState("");
   const [hasMetaMask, setHasMetaMask] = useState<boolean>(false);
   const [ens, setENS] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
 
   useEffect(() => {
     setHasMetaMask(typeof window !== "undefined" && !!window.ethereum);
   }, []);
+
   const openENSDialog = () => setIsENSDialogOpen(true);
-  const closeENSDialog = () => setIsENSDialogOpen(false);
+  const closeENSDialog = () => {
+    setIsENSDialogOpen(false);
+    setEnsInput("");
+    setProfileInfo(null);
+  };
+
   const getProvider = () => {
     if (window.ethereum) {
       return new ethers.providers.Web3Provider(window.ethereum);
@@ -40,14 +54,11 @@ export default function Tes() {
       "https://mainnet.infura.io/v3/408d8117e587491e86d5ab9baf5ceb03"
     );
   };
-  const [address, setAddress] = useState<string>("");
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
 
   const fetchENSAndProfile = async (addressOrENS: string) => {
     setIsLoading(true);
     setError("");
+    setProfileInfo(null);
     try {
       const provider = getProvider();
       let resolvedAddress = addressOrENS;
@@ -56,11 +67,9 @@ export default function Tes() {
       if (ethers.utils.isAddress(addressOrENS)) {
         resolvedENS = await provider.lookupAddress(addressOrENS);
       } else {
-        if (resolvedAddress) {
-          const resolved = await provider.resolveName(addressOrENS);
-          resolvedAddress = resolved || ""; //
-          resolvedENS = addressOrENS;
-        }
+        const resolved = await provider.resolveName(addressOrENS);
+        resolvedAddress = resolved || "";
+        resolvedENS = addressOrENS;
       }
 
       setAddress(resolvedAddress || "");
@@ -74,7 +83,7 @@ export default function Tes() {
           const url = await resolver.getText("url");
           const twitter = await resolver.getText("com.twitter");
           const github = await resolver.getText("com.github");
-          const avatar = await resolver.getText("avatar"); // Fetch the avatar URL
+          const avatar = await resolver.getText("avatar");
           setProfileInfo({
             name: name || "",
             description: description || "",
@@ -84,7 +93,6 @@ export default function Tes() {
             avatar: avatar || "",
           });
         } else {
-          // If the resolver does not exist, set the error message
           setError("ENS information not found");
           setProfileInfo(null);
         }
@@ -99,6 +107,7 @@ export default function Tes() {
       setIsLoading(false);
     }
   };
+
   const connectEthereum = async () => {
     if (window.ethereum) {
       try {
@@ -117,6 +126,7 @@ export default function Tes() {
       setError("Ethereum wallet not detected");
     }
   };
+  const navigate = useNavigate();
   const handleManualLookup = (e: React.FormEvent) => {
     e.preventDefault();
     const input = (e.target as HTMLFormElement).elements.namedItem(
@@ -126,6 +136,13 @@ export default function Tes() {
       fetchENSAndProfile(input.value);
     }
   };
+
+  const handleContinue = () => {
+    // Add your logic here for what should happen when the user clicks "Continue"
+    console.log("Continuing with profile:", profileInfo);
+    closeENSDialog();
+  };
+
   return (
     <div className="min-h-screen bg-yellow-300 p-4 font-mono mt-9">
       <div className="max-w-2xl mx-auto bg-white border-8 border-black p-8 shadow-[16px_16px_0_0_rgba(0,0,0,1)]">
@@ -141,7 +158,10 @@ export default function Tes() {
             Use ENS
           </button>
           <div className="text-center text-3xl font-bold">- OR -</div>
-          <button className="w-full bg-red-500 text-white py-6 text-2xl font-bold uppercase border-4 border-black hover:bg-red-600 active:translate-y-1 transition-transform">
+          <button
+            onClick={() => navigate("/theme")}
+            className="w-full bg-red-500 text-white py-6 text-2xl font-bold uppercase border-4 border-black hover:bg-red-600 active:translate-y-1 transition-transform"
+          >
             Create New Page
           </button>
         </div>
@@ -157,62 +177,123 @@ export default function Tes() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white border-8 border-black p-8 max-w-md w-full shadow-[16px_16px_0_0_rgba(0,0,0,1)]">
             <h2 className="text-3xl font-bold mb-6 uppercase">ENS Options</h2>
-            <div className="space-y-6">
-              {hasMetaMask ? (
-                <>
-                  {isConnected ? (
-                    <>
+            {!profileInfo && (
+              <div className="space-y-6">
+                {hasMetaMask ? (
+                  <>
+                    {isConnected ? (
                       <button
-                        onClick={() => {}}
+                        onClick={() => fetchENSAndProfile(address)}
                         className="w-full bg-green-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-green-600 active:translate-y-1 transition-transform"
                       >
                         Fetch ENS
                       </button>
-                    </>
-                  ) : (
-                    <>
+                    ) : (
                       <button
                         onClick={connectEthereum}
                         className="w-full bg-green-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-green-600 active:translate-y-1 transition-transform"
                       >
                         Connect to MetaMask
                       </button>
-                    </>
-                  )}
-                </>
-              ) : (
-                <button
-                  onClick={() => window.open("https://metamask.io/", "_blank")}
-                  className="w-full bg-green-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-green-600 active:translate-y-1 transition-transform"
-                >
-                  Install MetaMask
-                </button>
-              )}
-              <div className="text-center text-2xl font-bold">- OR -</div>
-              {isLoading ? (
-                <div className="text-center text-2xl font-bold">Loading...</div>
-              ) : (
-                <form onSubmit={handleManualLookup} className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="ETH address / ENS name"
-                    name="addressOrENS"
-                    value={ensInput}
-                    onChange={(e) => setEnsInput(e.target.value)}
-                    className="w-full p-4 text-xl border-4 border-black"
-                  />
-                  <button className="w-full bg-blue-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-blue-600 active:translate-y-1 transition-transform">
-                    Fetch ENS Data
+                    )}
+                  </>
+                ) : (
+                  <button
+                    onClick={() =>
+                      window.open("https://metamask.io/", "_blank")
+                    }
+                    className="w-full bg-green-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-green-600 active:translate-y-1 transition-transform"
+                  >
+                    Install MetaMask
                   </button>
-                </form>
-              )}
+                )}
+                <div className="text-center text-2xl font-bold">- OR -</div>
+                {isLoading ? (
+                  <div className="flex justify-center items-center py-4">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    <span className="ml-2 text-2xl font-bold">Loading...</span>
+                  </div>
+                ) : (
+                  <form onSubmit={handleManualLookup} className="space-y-2">
+                    <input
+                      type="text"
+                      placeholder="ETH address / ENS name"
+                      name="addressOrENS"
+                      value={ensInput}
+                      onChange={(e) => setEnsInput(e.target.value)}
+                      className="w-full p-4 text-xl border-4 border-black"
+                    />
+                    <button className="w-full bg-blue-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-blue-600 active:translate-y-1 transition-transform">
+                      Fetch ENS Data
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {error && (
+              <div className="mt-4 p-4 bg-red-100 border-4 border-red-500 text-red-700 font-bold">
+                {error}
+              </div>
+            )}
+
+            {profileInfo && (
+              <div className="mt-6 p-4 bg-green-100 border-4 border-green-500">
+                <h3 className="text-2xl font-bold mb-4">User Details</h3>
+                <div className="space-y-2">
+                  {profileInfo.avatar && (
+                    <img
+                      src={profileInfo.avatar}
+                      alt="Avatar"
+                      className="w-24 h-24 rounded-full mx-auto mb-4"
+                    />
+                  )}
+                  <p>
+                    <strong>Name:</strong> {profileInfo.name || "N/A"}
+                  </p>
+                  <p>
+                    <strong>ENS:</strong> {ens}
+                  </p>
+                  <p className="truncate">
+                    <strong>Address:</strong> {address}
+                  </p>
+                  <p>
+                    <strong>Description:</strong>{" "}
+                    {profileInfo.description || "N/A"}
+                  </p>
+                  <p>
+                    <strong>URL:</strong> {profileInfo.url || "N/A"}
+                  </p>
+                  <p>
+                    <strong>Twitter:</strong> {profileInfo.twitter || "N/A"}
+                  </p>
+                  <p>
+                    <strong>GitHub:</strong> {profileInfo.github || "N/A"}
+                  </p>
+                </div>
+                <button
+                  onClick={handleContinue}
+                  className="w-full mt-4 bg-blue-500 text-white py-4 text-xl font-bold uppercase border-4 border-black hover:bg-blue-600 active:translate-y-1 transition-transform"
+                >
+                  Continue
+                </button>
+                <button
+                  onClick={closeENSDialog}
+                  className="w-full mt-4 bg-gray-300 text-black py-4 text-xl font-bold uppercase border-4 border-black hover:bg-gray-400 active:translate-y-1 transition-transform"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+
+            {!profileInfo && (
               <button
                 onClick={closeENSDialog}
-                className="w-full bg-gray-300 text-black py-4 text-xl font-bold uppercase border-4 border-black hover:bg-gray-400 active:translate-y-1 transition-transform"
+                className="w-full mt-4 bg-gray-300 text-black py-4 text-xl font-bold uppercase border-4 border-black hover:bg-gray-400 active:translate-y-1 transition-transform"
               >
                 Cancel
               </button>
-            </div>
+            )}
           </div>
         </div>
       )}
