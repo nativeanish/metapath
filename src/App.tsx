@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Theme from "./theme/page";
 import Editor from "./editor/page";
-import ENS from "./ens";
+import ENS from "./ens/ens";
 import Home from "./home";
 import OnBoard from "./onboard";
 import Dashboard from "./dashboard";
