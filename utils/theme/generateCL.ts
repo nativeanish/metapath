@@ -105,12 +105,36 @@ function _generateCL(props: SocialLinkProps): string {
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
     </style>
+    <script>
+    function handleShare() {
+  if (navigator.share) {
+    // Using Web Share API
+    navigator
+      .share({
+        title: document.title,
+        text: "Check out this profile!",
+        url: window.location.href,
+      })
+      .then(() => console.log("Successfully shared"))
+      .catch((error) => console.error("Error sharing:", error));
+  } else {
+    // Fallback for browsers that don't support the Web Share API
+    const dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.value = window.location.href;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("URL copied to clipboard!");
+  }
+}
+
+    </script>
 </head>
 <body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
   <button
-    onclick="handleShare()"
-    id="shareButton"
-    class="fixed border-2 border-black z-10 flex items-center justify-center px-4 py-2 glass-effect text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 md:top-8 md:right-8"
+     onclick="handleShare()"
+    class="fixed border-2 border-black top-4 right-4 md:top-8 md:right-8 z-10 flex items-center justify-center px-4 py-2 glass-effect text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2">
       <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
@@ -183,33 +207,9 @@ function _generateCL(props: SocialLinkProps): string {
         dummy.select();
         document.execCommand('copy');
         document.body.removeChild(dummy);
-        alert('Copied!');
+        alert('URL copied to clipboard!');
       }
     }
-
-    function handleScroll() {
-      const shareButton = document.getElementById('shareButton');
-      if (window.innerWidth >= 768) { // md breakpoint
-        if (window.scrollY > 100) {
-          shareButton.style.position = 'fixed';
-          shareButton.style.top = '2rem';
-          shareButton.style.right = '2rem';
-        } else {
-          shareButton.style.position = 'absolute';
-          shareButton.style.top = '2rem';
-          shareButton.style.right = '2rem';
-        }
-      } else {
-        shareButton.style.position = 'fixed';
-        shareButton.style.bottom = '2rem';
-        shareButton.style.right = '2rem';
-        shareButton.style.top = 'auto';
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    handleScroll(); // Call once to set initial position
   </script>
 </body>
 </html>
