@@ -21,6 +21,7 @@ const _startUpload = async () => {
   const img_id = await upload(image.length ? image : "", "base64");
   useModal.setState({ currentStep: 1 });
   const content = await submit(img_id ? img_id : "");
+  console.log("Generated Content: ", content);
   useModal.setState({ currentStep: 2 });
   const content_id = await upload(content ? content : "", "html");
   console.log("Uploaded Content id: ", content_id);

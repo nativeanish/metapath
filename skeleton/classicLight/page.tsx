@@ -41,7 +41,7 @@ export default function ClassicLight(props: SocialLinkProps) {
             /> */}
             {props.image ? (
               <img
-                className="w-full h-full object-cover rounded-3xl bg-white"
+                className="w-full h-full object-cover rounded-3xl bg-white border-black border-2"
                 src={props.image}
                 alt={props.name ? props.name : "profile picture"}
               />

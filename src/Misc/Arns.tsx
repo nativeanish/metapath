@@ -21,46 +21,47 @@ function Arns() {
   const id = useID((state) => state.id);
   const navigate = useNavigate();
   const show = () => {
-    if (name.length) {
-      fetch("https://metapaths-server.onrender.com/check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          subdomain: name,
-        }),
-      }).then((e) => {
-        e.json().then((res: { status: 1 | 0 }) => {
-          if (res.status === 1) {
-            setError("Pre Registered, Register with other Name");
-          } else {
-            setLoading(true);
-            fetch("https://metapaths-server.onrender.com/register", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                id,
-                subdomain: name,
-              }),
-            }).then((res) => {
-              res.json().then((res) => {
-                if (res.status === 1) {
-                  runAO(navigate);
-                } else {
-                  setError("Something went wrong, Please re register");
-                  setLoading(false);
-                }
-              });
-            });
-          }
-        });
-      });
-    } else {
-      setError("ReCheck your input");
-    }
+    // if (name.length) {
+    //   fetch("https://metapaths-server.onrender.com/check", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       subdomain: name,
+    //     }),
+    //   }).then((e) => {
+    //     e.json().then((res: { status: 1 | 0 }) => {
+    //       if (res.status === 1) {
+    //         setError("Pre Registered, Register with other Name");
+    //       } else {
+    //         setLoading(true);
+    //         fetch("https://metapaths-server.onrender.com/register", {
+    //           method: "POST",
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //           },
+    //           body: JSON.stringify({
+    //             id,
+    //             subdomain: name,
+    //           }),
+    //         }).then((res) => {
+    //           res.json().then((res) => {
+    //             if (res.status === 1) {
+    //               runAO(navigate);
+    //             } else {
+    //               setError("Something went wrong, Please re register");
+    //               setLoading(false);
+    //             }
+    //           });
+    //         });
+    //       }
+    //     });
+    //   });
+    // } else {
+    //   setError("ReCheck your input");
+    // }
+    runAO(navigate);
   };
   return (
     <>
