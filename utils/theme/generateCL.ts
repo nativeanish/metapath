@@ -72,7 +72,7 @@ function _generateCL(props: SocialLinkProps): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${props.name || "Profile"} - Classic Light Profile</title>
+    <title>${props.name || "Profile"}</title>
     <meta name="description" content="${props.description || ""}">
     <meta property="og:title" content="${
       props.name || "Profile"
@@ -92,6 +92,7 @@ function _generateCL(props: SocialLinkProps): string {
     }">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
+    <link rel="icon" href="https://arweave.net/${props.image}">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
       body {
@@ -108,7 +109,8 @@ function _generateCL(props: SocialLinkProps): string {
 <body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
   <button
     onclick="handleShare()"
-    class="fixed border-2 border-black top-4 right-4 md:top-8 md:right-8 z-10 flex items-center justify-center px-4 py-2 glass-effect text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+    id="shareButton"
+    class="fixed border-2 border-black z-10 flex items-center justify-center px-4 py-2 glass-effect text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 md:top-8 md:right-8"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2">
       <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
@@ -181,9 +183,33 @@ function _generateCL(props: SocialLinkProps): string {
         dummy.select();
         document.execCommand('copy');
         document.body.removeChild(dummy);
-        alert('URL copied to clipboard!');
+        alert('Copied!');
       }
     }
+
+    function handleScroll() {
+      const shareButton = document.getElementById('shareButton');
+      if (window.innerWidth >= 768) { // md breakpoint
+        if (window.scrollY > 100) {
+          shareButton.style.position = 'fixed';
+          shareButton.style.top = '2rem';
+          shareButton.style.right = '2rem';
+        } else {
+          shareButton.style.position = 'absolute';
+          shareButton.style.top = '2rem';
+          shareButton.style.right = '2rem';
+        }
+      } else {
+        shareButton.style.position = 'fixed';
+        shareButton.style.bottom = '2rem';
+        shareButton.style.right = '2rem';
+        shareButton.style.top = 'auto';
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    handleScroll(); // Call once to set initial position
   </script>
 </body>
 </html>
