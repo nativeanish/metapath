@@ -44,7 +44,7 @@ export default async function generateWindowDarkHTML(
               link.name
             }" class="w-full h-full" />  
           </div>
-          <span class="truncate">${link.name}</span>
+          <span class="truncate ml-1">${link.name}</span>
         </a>
       `
           )
