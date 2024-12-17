@@ -1,4 +1,3 @@
-import React from "react";
 import { IconType } from "react-icons";
 import { ImageIcon } from "../icon/imageIcon";
 
@@ -15,7 +14,7 @@ interface SocialLinkProps {
   }>;
 }
 
-async function generateHTML(props: SocialLinkProps): Promise<string> {
+function generateHTML(props: SocialLinkProps): string {
   const generateBrutalistButton = (
     icon: string,
     text: string,
@@ -23,7 +22,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
     uuid: string,
     isLast: boolean
   ) => {
-    const icon_adddress = ImageIcon.find((item) => item.name === icon);
+    const icon_address = ImageIcon.find((item) => item.name === icon);
     return `
       <button class="brutalist-button w-full px-2 py-2 text-lg font-bold transition-all duration-200 rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 focus:outline-none focus:ring-0 ${
         !isLast ? "mb-4" : ""
@@ -33,7 +32,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
             text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
           }</span>
           <img class="w-6 h-6 ml-2" aria-hidden="true" src="https://arweave.net/${
-            icon_adddress?.arweave[0]
+            icon_address?.arweave[0]
           }" alt="${icon}" />
         </a>
       </button>
@@ -61,20 +60,24 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${props.name || "Profile"} - Brutalist Profile</title>
+    <title>${props.name || "Profile"}</title>
     <meta name="description" content="${props.description || ""}">
     <meta property="og:title" content="${
       props.name || "Profile"
     } - Brutalist Profile">
     <meta property="og:description" content="${props.description || ""}">
-    <meta property="og:image" content="${props.image || ""}">
+    <meta property="og:image" content="https://arweave.net/${
+      props.image || ""
+    }">
     <meta property="og:type" content="profile">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="${
       props.name || "Profile"
     } - Brutalist Profile">
     <meta name="twitter:description" content="${props.description || ""}">
-    <meta name="twitter:image" content="${props.image || ""}">
+    <meta name="twitter:image" content="https://arweave.net/${
+      props.image || ""
+    }">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://arweave.net/585bVudQRkjjhDdHaPO3n-SiEHnoXPkSjnQGVawZn60" type="text/javascript"></script>
     <style>
@@ -82,17 +85,32 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
       body {
         font-family: 'Inter', sans-serif;
       }
+      .brutalist-shadow {
+        box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+      }
     </style>
 </head>
 <body class="min-h-screen bg-[#ffde2a] text-black py-12 px-4 sm:px-6 lg:px-8">
+  <button
+    onclick="handleShare()"
+    class="fixed top-4 right-4 md:top-8 md:right-8 z-10 flex items-center justify-center px-4 py-2 bg-white text-black font-bold rounded-none border-4 border-black brutalist-shadow hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all duration-200"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" class="w-4 h-4 mr-2">
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+      <polyline points="16 6 12 2 8 6"></polyline>
+      <line x1="12" y1="2" x2="12" y2="15"></line>
+    </svg>
+    <span class="text-sm font-bold">SHARE</span>
+  </button>
+
   <div class="max-w-md mx-auto pt-3">
     <div class="text-center">
-      <div class="w-40 h-40 rounded-full mx-auto flex items-center justify-center border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <div class="w-40 h-40 rounded-full mx-auto flex items-center justify-center border-4 border-black brutalist-shadow">
         ${
           props.image
             ? `
           <img
-            class="w-full h-full object-cover rounded-full bg-white"
+            class="w-full h-full object-cover bg-white rounded-full"
             src="${props.image}"
             alt="${props.name ? props.name : "profile picture"}"
           />
@@ -101,7 +119,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
         }
       </div>
       <h1 class="mt-6 text-5xl font-extrabold">${props.name || ""}</h1>
-      <p class="mt-5 text-md">${props.description || ""}</p>
+      <p class="mt-5 text-md font-bold">${props.description || ""}</p>
     </div>
     <div class="flex flex-col items-center justify-center">
       <div class="mt-8 flex flex-col justify-center w-full box-border font-bold">
@@ -109,6 +127,21 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
       </div>
     </div>
   </div>
+  
+  <div class="mt-20 max-w-xs mx-auto text-center">
+    <div class="bg-white p-6 border-4 border-black brutalist-shadow">
+      <h2 class="text-xl font-bold text-black mb-6">CREATE YOUR OWN PAGE</h2>
+      <a
+        href="https://yourplatform.com/join"
+        class="inline-block bg-black text-white font-bold py-3 px-6 border-4 border-black hover:bg-white hover:text-black transition-all duration-200"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        JOIN US NOW
+      </a>
+    </div>
+  </div>
+
   <script>
     function getRandomColor() {
       const letters = "0123456789ABCDEF";
@@ -151,7 +184,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
     setButtonColors();
 
     // Add hover effects
-    document.querySelectorAll('.brutalist-button').forEach(button => {
+    document.querySelectorAll('.brutalist-button, .fixed').forEach(button => {
       button.addEventListener('mouseover', () => {
         button.style.transform = 'translate(4px, 4px)';
         button.style.boxShadow = 'none';
@@ -161,6 +194,31 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
         button.style.boxShadow = '4px 4px 0px 0px rgba(0,0,0,1)';
       });
     });
+
+    function handleShare() {
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          text: "Check out this profile!",
+          url: window.location.href,
+        })
+        .then(() => console.log("Successfully shared"))
+        .catch((error) => console.error("Error sharing:", error));
+      } else {
+        const dummy = document.createElement("input");
+        document.body.appendChild(dummy);
+        dummy.value = window.location.href;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        alert("URL copied to clipboard!");
+      }
+    }
+
+    function look(uuid) {
+      // Implement the look function if needed
+      console.log("Clicked link with UUID:", uuid);
+    }
   </script>
 </body>
 </html>
@@ -171,7 +229,7 @@ async function generateHTML(props: SocialLinkProps): Promise<string> {
 
 export default async function generateCB(props: SocialLinkProps) {
   try {
-    const htmlOutput = await generateHTML(props);
+    const htmlOutput = generateHTML(props);
     return htmlOutput;
   } catch (error) {
     console.error("Error generating HTML:", error);
