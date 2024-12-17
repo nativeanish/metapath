@@ -62,18 +62,14 @@ function generateHTML(props: SocialLinkProps): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${props.name || "Profile"}</title>
     <meta name="description" content="${props.description || ""}">
-    <meta property="og:title" content="${
-      props.name || "Profile"
-    } - Brutalist Profile">
+    <meta property="og:title" content="${props.name || "Profile"}">
     <meta property="og:description" content="${props.description || ""}">
     <meta property="og:image" content="https://arweave.net/${
       props.image || ""
     }">
     <meta property="og:type" content="profile">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${
-      props.name || "Profile"
-    } - Brutalist Profile">
+    <meta name="twitter:title" content="${props.name || "Profile"}">
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="https://arweave.net/${
       props.image || ""

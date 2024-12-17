@@ -66,9 +66,7 @@ export default async function generateWindowDarkHTML(
     }">
     <meta property="og:type" content="profile">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${
-      props.name || "Profile"
-    } - Window Dark">
+    <meta name="twitter:title" content="${props.name || "Profile"}>
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="https://arweave.net/${
       props.image || ""

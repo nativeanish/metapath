@@ -57,18 +57,14 @@ export default async function generateBL(
     <title>${props.name || "Profile"}</title>
     <meta name="description" content="${props.description || ""}">
     <link rel='icon' href="https://arweave.net/${props.image}>
-    <meta property="og:title" content="${
-      props.name || "Profile"
-    } - Bento Light">
+    <meta property="og:title" content="${props.name || "Profile"}">
     <meta property="og:description" content="${props.description || ""}">
     <meta property="og:image" content="https://arweave.net/${
       props.image || ""
     }">
     <meta property="og:type" content="profile">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${
-      props.name || "Profile"
-    } - Bento Light">
+    <meta name="twitter:title" content="${props.name || "Profile"}">
     <meta name="twitter:description" content="${props.description || ""}">
     <meta name="twitter:image" content="https://arweave.net/${
       props.image || ""
